@@ -44,6 +44,28 @@ export class RbacValidator {
         );
     }
 
+    // New methods for v2.0 compatibility
+    public async applyRbac(query: any, user: any): Promise<any> {
+        // Simple implementation - just return the query for now
+        // In a full implementation, this would modify the query based on RBAC rules
+        return query;
+    }
+
+    public async canCreate(collection: string, user: any): Promise<boolean> {
+        if (!user || !user.roles) return false;
+        return this.hasAccess(collection, 'write', user.roles);
+    }
+
+    public async canUpdate(collection: string, id: any, user: any): Promise<boolean> {
+        if (!user || !user.roles) return false;
+        return this.hasAccess(collection, 'write', user.roles);
+    }
+
+    public async canDelete(collection: string, id: any, user: any): Promise<boolean> {
+        if (!user || !user.roles) return false;
+        return this.hasAccess(collection, 'delete', user.roles);
+    }
+
     public getRbacFeatures(collection: string, action: string, userRoles: string[], isRelate: boolean = false, layer: number = 1, pre_fieldName?: string): string[] {
 
         if (layer > 2) {

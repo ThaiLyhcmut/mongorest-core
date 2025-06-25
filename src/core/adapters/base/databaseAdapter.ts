@@ -47,10 +47,32 @@ export interface DatabaseAdapter {
    */
   dispose(): Promise<void>;
 
+  // Enhanced methods for v2.0 (optional for backward compatibility)
+  find?<T = any>(collection: string, query: any): Promise<T[]>;
+  create?<T = any>(collection: string, data: any): Promise<T>;
+  update?<T = any>(collection: string, filter: any, data: any): Promise<T>;
+  delete?(collection: string, filter: any): Promise<{ deletedCount: number }>;
+  
+  // Transaction support (optional)
+  beginTransaction?(): Promise<void>;
+  commitTransaction?(): Promise<void>;
+  rollbackTransaction?(): Promise<void>;
+  supportsTransactions?(): Promise<boolean>;
+  
+  // Collection management (optional)
+  listCollections?(): Promise<string[]>;
+  createCollection?(name: string): Promise<void>;
+  createIndex?(collection: string, spec: any, options?: any): Promise<void>;
+  
+  // Connection management (optional)
+  connect?(): Promise<void>;
+  disconnect?(): Promise<void>;
+  isConnected?(): boolean;
+
   /**
-   * Test adapter connection
+   * Test adapter connection (optional)
    */
-  testConnection(): Promise<boolean>;
+  testConnection?(): Promise<boolean>;
 }
 
 export type DatabaseType = 

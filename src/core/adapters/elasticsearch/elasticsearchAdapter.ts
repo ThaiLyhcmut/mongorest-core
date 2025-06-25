@@ -23,6 +23,11 @@ export class ElasticsearchAdapter extends BaseDatabaseAdapter {
 
   private client?: any; // Elasticsearch client
 
+  constructor(config?: any) {
+    super();
+    // Elasticsearch-specific initialization if needed
+  }
+
   /**
    * Convert intermediate query to Elasticsearch DSL
    */

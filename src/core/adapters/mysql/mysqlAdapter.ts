@@ -24,6 +24,11 @@ export class MySQLAdapter extends BaseDatabaseAdapter {
 
   private pool?: any; // MySQL connection pool
 
+  constructor(config?: any) {
+    super();
+    // MySQL-specific initialization if needed
+  }
+
   /**
    * Convert intermediate query to MySQL SQL
    */

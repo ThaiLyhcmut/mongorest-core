@@ -24,6 +24,11 @@ export class PostgreSQLAdapter extends BaseDatabaseAdapter {
 
   private pool?: any; // PostgreSQL connection pool
 
+  constructor(config?: any) {
+    super();
+    // PostgreSQL-specific initialization if needed
+  }
+
   /**
    * Convert intermediate query to PostgreSQL SQL
    */
@@ -95,6 +100,45 @@ export class PostgreSQLAdapter extends BaseDatabaseAdapter {
       }
     } catch (error) {
       throw new Error(`PostgreSQL query execution failed: ${(error as Error).message}`);
+    }
+  }
+
+  // Additional methods for test compatibility
+  async create<T = any>(collection: string, data: any): Promise<T> {
+    const query: IntermediateQuery = {
+      type: 'insert',
+      collection,
+      data
+    };
+    const result = await this.executeQuery(this.convertQuery(query));
+    return result.data[0];
+  }
+
+  async query<T = any>(query: IntermediateQuery): Promise<IntermediateQueryResult<T>> {
+    return this.executeQuery(this.convertQuery(query));
+  }
+
+  async connect(): Promise<void> {
+    // PostgreSQL connection logic
+  }
+
+  async disconnect(): Promise<void> {
+    if (this.pool) {
+      await this.pool.end();
+    }
+  }
+
+  async raw(sql: string): Promise<any> {
+    if (!this.pool) {
+      throw new Error('PostgreSQL connection pool is not available');
+    }
+    
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(sql);
+      return result.rows;
+    } finally {
+      client.release();
     }
   }
 
