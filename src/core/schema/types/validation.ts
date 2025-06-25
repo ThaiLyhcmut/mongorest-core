@@ -2,6 +2,8 @@
  * Types for Schema Validation System
  */
 
+import { Schema } from "mongoose";
+
 export interface ValidationError {
   field?: string;
   fields?: string[];
@@ -48,7 +50,7 @@ export interface UniqueConstraint {
 
 export interface BusinessRule {
   name: string;
-  validator: (data: any, schema: any) => boolean | string;
+  validator: (data: any, schema: Schema) => boolean | string;
   message?: string;
   priority?: number;
 }

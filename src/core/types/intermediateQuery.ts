@@ -7,9 +7,6 @@ export interface IntermediateQuery {
   /** Query type */
   type?: 'read' | 'insert' | 'update' | 'delete';
   
-  /** Operation type (alternative to type) */
-  operation?: string;
-  
   /** Main collection/table being queried */
   collection: string;
   
@@ -19,15 +16,15 @@ export interface IntermediateQuery {
   /** Filter conditions */
   filter?: FilterCondition;
   
-  /** Data for insert/update operations */
-  data?: any;
-  
   /** Simple filter array (alternative to filter) */
   filters?: Array<{
     field: string;
     operator: string;
     value: any;
   }>;
+  
+  /** Data for insert/update operations */
+  data?: any;
   
   /** Fields to select/project */
   select?: SelectClause;
@@ -46,9 +43,6 @@ export interface IntermediateQuery {
   
   /** Join/relationship configurations */
   joins?: JoinClause[];
-  
-  /** Population (for MongoDB-style relationships) */
-  populate?: string[] | any[];
   
   /** Aggregation operations */
   aggregations?: AggregationClause[];

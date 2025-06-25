@@ -48,44 +48,6 @@ export abstract class Relationship {
   }
 
   /**
-   * Populate relationships in data (v2.0 compatibility)
-   */
-  async populate(data: any[], adapter: any): Promise<void> {
-    // Simple implementation - would be enhanced in full version
-    if (!data || data.length === 0) return;
-    
-    // Extract IDs to fetch related data
-    const ids = data
-      .map(item => item[this.localField])
-      .filter(Boolean);
-    
-    if (ids.length === 0) return;
-    
-    // Fetch related data
-    const relatedData = await adapter.find(this.targetTable, {
-      filter: { [this.foreignField]: { $in: ids } }
-    });
-    
-    // Map related data back to original data
-    const relatedMap = new Map();
-    for (const item of relatedData) {
-      const key = item[this.foreignField];
-      if (!relatedMap.has(key)) {
-        relatedMap.set(key, []);
-      }
-      relatedMap.get(key).push(item);
-    }
-    
-    // Populate the data
-    for (const item of data) {
-      const related = relatedMap.get(item[this.localField]);
-      if (related) {
-        item[this.name] = this.isMultiResult() ? related : related[0];
-      }
-    }
-  }
-
-  /**
    * Get join hint from embed request
    */
   protected getJoinType(

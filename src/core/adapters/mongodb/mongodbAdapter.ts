@@ -27,13 +27,9 @@ export class MongoDBAdapter extends BaseDatabaseAdapter {
   private relationshipRegistry?: RelationshipRegistry;
   private db?: any; // MongoDB database instance
 
-  constructor(config?: any) {
+  constructor(relationshipRegistry?: RelationshipRegistry) {
     super();
-    if (config instanceof RelationshipRegistry) {
-      this.relationshipRegistry = config;
-    } else if (config?.relationshipRegistry) {
-      this.relationshipRegistry = config.relationshipRegistry;
-    }
+    this.relationshipRegistry = relationshipRegistry;
   }
 
   /**

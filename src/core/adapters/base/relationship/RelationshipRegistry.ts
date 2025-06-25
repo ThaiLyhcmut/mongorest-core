@@ -48,13 +48,9 @@ export class RelationshipRegistry {
   /**
    * Get relationship
    */
-  get(keyOrSourceTable: string, relationshipName?: string): Relationship | undefined {
-    if (relationshipName) {
-      const key = `${keyOrSourceTable}.${relationshipName}`;
-      return this.relationships.get(key);
-    } else {
-      return this.relationships.get(keyOrSourceTable);
-    }
+  get(sourceTable: string, relationshipName: string): Relationship | undefined {
+    const key = `${sourceTable}.${relationshipName}`;
+    return this.relationships.get(key);
   }
 
   /**
